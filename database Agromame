@@ -1,0 +1,154 @@
+– TABEL PRODUKSI 
+
+CREATE TABLE Produksi 
+    ( 
+     id_produksi SERIAL PRIMARY KEY , 
+     tgl_produksi DATE  NOT NULL , 
+     tgl_selesai DATE NULL, 
+     jmlh_produksi FLOAT  NOT NULL,
+	 id_karyawan INTEGER references karyawan(id_karyawan),
+	 id_hp INTEGER references hasil_panen (id_hp),
+	 id_status_produksi INTEGER references status_produksi (id_status_produksi)
+    )
+
+– TABEL STATUS PRODUKSI 
+
+CREATE TABLE status_produksi 
+    ( 
+     id_status_produksi SERIAL  PRIMARY KEY , 
+     nama_status VARCHAR (10)  NOT NULL 
+    ) 
+
+– TABEL PRODUK 
+
+CREATE TABLE Produk 
+    ( 
+     id_produk SERIAL PRIMARY KEY , 
+     stok INTEGER  NOT NULL , 
+	 id_produksi INTEGER references produksi (id_produksi),
+	 id_jenis_produk INTEGER references jenis_produk (id_jenis_produk),
+	 tgl_update_stok DATE NOT NULL
+    )  
+
+– TABEL JENIS PRODUK 
+
+CREATE TABLE jenis_produk 
+    ( 
+     id_jenis_produk SERIAL  PRIMARY KEY , 
+     nama_jenis VARCHAR (10)  NOT NULL,
+	 stok_total INTEGER NOT NULL,
+	 harga INTEGER NOT NULL
+    )
+
+– TABEL HASIL PANEN 
+
+CREATE TABLE Hasil_Panen 
+    ( 
+     id_hp SERIAL PRIMARY KEY , 
+     tgl_panen DATE  NOT NULL , 
+     "jmlh_panen" FLOAT  NOT NULL,
+	 id_karyawan integer references karyawan (id_karyawan)
+    ) 
+
+– TABEL KARYAWAN 
+
+CREATE TABLE Karyawan 
+    ( 
+     id_karyawan SERIAL  PRIMARY KEY , 
+     nama_karyawan VARCHAR (128)  NOT NULL , 
+     gender BOOLEAN NOT NULL , 
+     tgl_lahir DATE  NOT NULL , 
+     no_telp VARCHAR (20)  NOT NULL , 
+     tgl_masuk DATE  NOT NULL , 
+     status_karyawan BOOLEAN  NOT NULL , 
+     gaji_karyawan Integer NULL,
+	 id_jabatan INTEGER REFERENCES jabatan (id_jabatan),
+	 username VARCHAR(20) UNIQUE,
+	 kata_sandi VARCHAR(8) NOT NULL
+    ) 
+
+– TABEL JABATAN 
+
+CREATE TABLE jabatan 
+    ( 
+     id_jabatan SERIAL PRIMARY KEY , 
+     nama_jabatan VARCHAR (20)  NOT NULL 
+    ) 
+
+– TABEL TRANSAKSI  
+
+CREATE TABLE transaksi 
+    ( 
+     id_transaksi SERIAL PRIMARY KEY , 
+     tgl_transaksi DATE  NOT NULL,
+	 id_pelanggan INTEGER references pelanggan (id_pelanggan),
+	 id_karyawan INTEGER references karyawan (id_karyawan),
+	 id_status_transaksi INTEGER references status_transaksi (id_status_transaksi),
+	 id_metode_pembayaran INTEGER references metode_pembayaran (id_metode_pembayaran)
+    )
+
+– TABEL DETAIL TRANSAKSI 
+
+CREATE TABLE detail_transaksi 
+    ( 
+     id_detail_transaksi SERIAL  PRIMARY KEY, 
+     quantity INTEGER  NOT NULL , 
+     	 id_transaksi INTEGER references transaksi (id_transaksi),
+	 id_produk INTEGER references produk (id_produk)
+    ) 
+
+– TABEL METODE PEMBAYARAN
+
+CREATE TABLE metode_pembayaran 
+    ( 
+     id_metode_pembayaran SERIAL PRIMARY KEY , 
+     nama_metode       VARCHAR (10)  NOT NULL 
+    ) 
+
+– TABEL STATUS TRANSAKSI 
+
+CREATE TABLE status_transaksi 
+    ( 
+     id_status_transaksi SERIAL  PRIMARY KEY, 
+     nama_status VARCHAR (10)  NOT NULL 
+    ) 
+
+– TABEL PELANGGAN 
+
+CREATE TABLE pelanggan 
+    ( 
+     id_pelanggan SERIAL PRIMARY KEY , 
+     nama_pelanggan VARCHAR (128)  NOT NULL , 
+     no_telp_pelanggan VARCHAR (20)  NOT NULL , 
+     tgl_registrasi DATE  NOT NULL,
+     id_alamat INTEGER references alamat (id_alamat),
+	 username VARCHAR(20) UNIQUE,
+	 kata_sandi VARCHAR(8) NOT NULL
+    )
+
+– TABEL DESA 
+
+CREATE TABLE desa 
+    ( 
+     id_desa SERIAL PRIMARY KEY, 
+     nama_desa VARCHAR (128)  NOT NULL, 
+     id_kecamatan SERIAL REFERENCES kecamatan (id_kecamatan)
+    ) 
+
+– TABEL KECAMATAN 
+
+CREATE TABLE kecamatan 
+    ( 
+     id_kecamatan SERIAL PRIMARY KEY , 
+     nama_kecamatan VARCHAR (128)  NOT NULL,
+	 id_kabupaten INTEGER references kabupaten (id_kabupaten)
+    ) 
+
+– TABEL KABUPATEN 
+
+CREATE TABLE kabupaten 
+    ( 
+     id_kabupaten   SERIAL  PRIMARY KEY, 
+     nama_kabupaten VARCHAR (128)  NOT NULL 
+    ) 
+
